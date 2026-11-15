@@ -1,0 +1,196 @@
+@import 'tailwindcss';
+
+/* Interaction variants that also respond to data-force, so the style guide can
+   pin a real component in its hover / focus / pressed state. */
+@custom-variant hov (&:hover, &[data-force~='hover']);
+@custom-variant foc (&:focus-visible, &[data-force~='focus']);
+@custom-variant prs (&:active, &[data-force~='pressed']);
+
+@theme {
+  --font-sans: 'Outfit', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Brand */
+  --color-forest: #104a2f; /* hero, footer, dark bands */
+  --color-forest-2: #0b3923; /* forest hover, pressed */
+  --color-leaf: #17603c; /* add buttons, solid green controls */
+  --color-leaf-2: #1d7449; /* leaf hover */
+  --color-sun: #f7c32e; /* primary CTA, display accent, discount badges */
+  --color-sun-2: #ffd659; /* sun hover */
+  --color-sun-soft: #fde68a; /* yellow promo card */
+  --color-lime: #c4e2a3; /* category band */
+  --color-lime-soft: #e9f4dc; /* chips, selected rows */
+  --color-tomato: #ef5a2f; /* burger promo card, large display only */
+  --color-tomato-ink: #c03d17; /* small red text: errors, strike prices on white */
+
+  /* Neutrals */
+  --color-paper: #ffffff;
+  --color-card: #f4f4f1; /* dish cards, image wells */
+  --color-card-2: #ebebe6; /* card hover */
+  --color-line: #e4e5df;
+  --color-line-strong: #cfd1c8;
+  --color-ink: #121813;
+  --color-muted: #535b55; /* AA on paper, card and lime */
+  --color-faint: #9aa09b; /* decoration only */
+  --color-on-forest-muted: #c9d8cf; /* body copy on forest, AA */
+  --color-scrim: #08140d;
+
+  --radius-xs: 10px;
+  --radius-sm: 14px; /* inputs in dense rows, small tiles */
+  --radius-md: 20px; /* dish cards, category tiles */
+  --radius-lg: 28px; /* promo cards, dialogs */
+  --radius-xl: 40px; /* bands */
+
+  --shadow-card: 0 1px 2px rgb(18 24 19 / 0.04), 0 10px 30px -14px rgb(18 24 19 / 0.18);
+  --shadow-float: 0 2px 6px rgb(18 24 19 / 0.06), 0 24px 50px -20px rgb(18 24 19 / 0.35);
+  --shadow-drawer: -24px 0 60px -24px rgb(8 20 13 / 0.45);
+  --shadow-food: 0 30px 40px -20px rgb(0 0 0 / 0.45);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-base: 260ms;
+  --duration-slow: 520ms;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+  --animate-pop: pop 360ms var(--ease-spring);
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-ping-soft: ping-soft 1.8s var(--ease-out) infinite;
+  --animate-wiggle: wiggle 2.4s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(-1.5deg); }
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes ping-soft {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-8deg); }
+    40% { transform: rotate(6deg); }
+    60% { transform: rotate(0deg); }
+  }
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    corner-shape: squircle;
+    border-color: var(--color-line);
+  }
+  .round,
+  .round::before,
+  .round::after {
+    corner-shape: round;
+  }
+  html {
+    background: var(--color-paper);
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+  button:not(:disabled),
+  [role='button'] {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-leaf);
+    outline-offset: 2px;
+  }
+  [data-force~='focus']:not(input, select, textarea) {
+    outline: 3px solid var(--color-leaf);
+    outline-offset: 2px;
+  }
+  .on-dark [data-force~='focus'],
+  .on-dark[data-force~='focus'] {
+    outline-color: var(--color-sun);
+  }
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-sun);
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-sun) 55%, transparent);
+  }
+  img,
+  svg {
+    display: block;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 1340px;
+    margin-inline: auto;
+    padding-inline: clamp(16px, 5vw, 100px);
+  }
+  /* Faint food doodles behind the forest bands. */
+  .doodles {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260' fill='none' stroke='%23ffffff' stroke-opacity='.035' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M30 70c0-22 18-36 40-36s40 14 40 36z'/%3E%3Cpath d='M28 80h84M32 92h76c0 8-8 14-18 14H50c-10 0-18-6-18-14z'/%3E%3Cpath d='M170 30l60 30-60 40z'/%3E%3Ccircle cx='190' cy='58' r='5'/%3E%3Cpath d='M160 170h50l-6 60h-38zM168 170l-6-30M182 170v-36M196 170l4-32'/%3E%3Cpath d='M40 170c0 30 20 50 40 50s40-20 40-50zM60 160c0-10 6-14 6-24M80 160c0-10 6-14 6-24'/%3E%3C/svg%3E");
+  }
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-card) 0%, var(--color-card-2) 50%, var(--color-card) 100%);
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  /* A stretched link: the card is one link target, nested buttons sit above it. */
+  .stretched::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

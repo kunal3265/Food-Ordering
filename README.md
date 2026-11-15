@@ -97,3 +97,9 @@ payment.
 `npm run build` produces a Worker entrypoint plus static assets, deployable to
 Cloudflare Workers. Wire `POST /api/orders` to a payment provider and a
 database to take real orders.
+
+For a static host such as Vercel, `npm run build:web` writes a plain folder of
+assets to `dist-web` (browser bundle only, no Worker) and `vercel.json` points
+the host at it with an SPA rewrite. Browsing, cart and order tracking work
+there; the form and checkout endpoints need the Worker, so they return 404 in
+the static deployment.
